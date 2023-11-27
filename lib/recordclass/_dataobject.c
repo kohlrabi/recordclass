@@ -2149,8 +2149,13 @@ _collection_protocol(PyObject *cls, PyObject *sequence, PyObject *mapping, PyObj
         return NULL;
     }
 
-    copy_mapping_methods(tp->tp_as_mapping, tp_base->tp_as_mapping);
-    copy_sequence_methods(tp->tp_as_sequence, tp_base->tp_as_sequence);
+    if (!tp->tp_as_mapping) {
+        copy_mapping_methods(tp->tp_as_mapping, tp_base->tp_as_mapping);
+    }
+    
+    if (!tp->tp_as_sequence) {
+        copy_sequence_methods(tp->tp_as_sequence, tp_base->tp_as_sequence);
+    }
 
     if (!mp && sq) {
         if (ro) {
